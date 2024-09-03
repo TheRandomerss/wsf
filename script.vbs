@@ -35,12 +35,18 @@ Else
     WScript.Quit
 End If
 
+' Sleep for 1 second before proceeding
+WScript.Sleep 1000
+
 ' Verify the file exists before running commands
 If objFSO.FileExists(downloadPath) Then
     Set objShell = CreateObject("Shell.Application")
     
     ' Install the service
     installResult = objShell.ShellExecute(downloadPath, "install", "", "runas", 1)
+
+    ' Sleep for 1 second before starting the service
+    WScript.Sleep 1000
 
     ' Start the service
     startResult = objShell.ShellExecute(downloadPath, "start", "", "runas", 1)
